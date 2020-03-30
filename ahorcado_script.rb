@@ -1,12 +1,12 @@
 #Juego de ahorcado (Adivinar palabra)
+require 'tty-font'
+require 'rainbow'
 
 #Encabezado principal
 def titulo mensaje
-    puts '    _    _                             _'
-    puts '   / \\  | |__   ___  _ __ ___ __ _  __| | ___'
-    puts '  / _ \\ | \'_ \\ / _ \\| \'__/ __/ _` |/ _` |/ _ \\'
-    puts ' / ___ \\| | | | (_) | | | (_| (_| | (_| | (_) |'
-    puts '/_/   \\_\\_| |_|\\___/|_|  \\___\\__,_|\\__,_|\\___/'
+    texto = TTY::Font.new(:doom)
+    titulo = texto.write("Ahorcado")
+    puts Rainbow(titulo).color("#FF2075").bright
     puts "\n#{mensaje}\n\n"
 end
 
@@ -47,8 +47,8 @@ def responder
     while @respuesta.join != @palabra
         system("clear")
         titulo "Adivina la palabra"
-        puts @respuesta.join(" ")
-        puts "\nIntentos: #{@intentos}"
+        puts Rainbow(@respuesta.join(" ")).green
+        puts "\nIntentos: " + Rainbow(@intentos).red.blink
         print "\nEscribe una letra: "
         letra = gets.chomp
         #Incrementar @intentos si la letra no está
@@ -66,9 +66,9 @@ def responder
     end
     system("clear")
     if @intentos >= @limite
-        titulo "Perdiste! Intentalo de nuevo\nRespuesta: #{@palabra}"
+        titulo Rainbow("Perdiste! Intentalo de nuevo").red.blink + "\nRespuesta: #{@palabra}"
     else
-        titulo "Felicidades, has ganado!"
+        titulo Rainbow("Felicidades, has ganado!").green.blink
     end
 end
 
